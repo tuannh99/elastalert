@@ -1096,6 +1096,10 @@ class ElastAlerter():
         while self.running:
             next_run = datetime.datetime.utcnow() + self.run_every
 
+            # TODO: Load current alerts
+            if self.conf['has_resolver']:
+                pass
+                
             self.run_all_rules()
 
             # Quit after end_time has been reached

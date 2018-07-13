@@ -325,6 +325,10 @@ def load_options(rule, conf, filename, args=None):
         raise EAException('scan_entire_timeframe can only be used if there is a timeframe specified')
 
 
+def load_resolver(rule):
+    pass
+
+
 def load_modules(rule, args=None):
     """ Loads things that could be modules. Enhancements, alerts and rule type. """
     # Set match enhancements

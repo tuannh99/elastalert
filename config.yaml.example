@@ -62,3 +62,7 @@ writeback_index: elastalert_status
 # sending the alert until this time period has elapsed
 alert_time_limit:
   days: 2
+
+# This tells elastalert the existense/usage of alerts resolver
+has_resolver: True
+resolver_class: http_resolver
