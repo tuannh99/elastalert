@@ -916,6 +916,11 @@ class ElastAlerter():
             # Add it as an aggregated match
             self.add_aggregated_alert(match, rule)
 
+        # Call resolver if any
+        if not num_matches and rule['resolver']:
+            elastalert_logger.info('Attempting to call resolver!')
+            rule['resolver'].resolve()
+
         # Mark this endtime for next run's start
         rule['previous_endtime'] = endtime
 
@@ -1095,10 +1100,6 @@ class ElastAlerter():
         elastalert_logger.info("Starting up")
         while self.running:
             next_run = datetime.datetime.utcnow() + self.run_every
-
-            # TODO: Load current alerts
-            if self.conf['has_resolver']:
-                pass
                 
             self.run_all_rules()
 

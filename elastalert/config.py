@@ -8,6 +8,7 @@ import sys
 
 import alerts
 import enhancements
+import resolves
 import jsonschema
 import ruletypes
 import yaml
@@ -325,10 +326,6 @@ def load_options(rule, conf, filename, args=None):
         raise EAException('scan_entire_timeframe can only be used if there is a timeframe specified')
 
 
-def load_resolver(rule):
-    pass
-
-
 def load_modules(rule, args=None):
     """ Loads things that could be modules. Enhancements, alerts and rule type. """
     # Set match enhancements
@@ -342,6 +339,18 @@ def load_modules(rule, args=None):
             raise EAException("Enhancement module %s not a subclass of BaseEnhancement" % (enhancement_name))
         match_enhancements.append(enhancement(rule))
     rule['match_enhancements'] = match_enhancements
+
+    resolver_object = None
+    resolver_name = rule.get('resolver', None)
+    if resolver_name:
+        resolver_class = get_module(resolver_name)
+
+        if not issubclass(resolver_class, resolves.BaseResolver):
+            raise EAException("Resolver module %s is not a subclass of BaseResolver" % (resolver_name))
+        resolver_object = resolver_class(rule)
+
+    rule['resolver'] = resolver_object
+
 
     # Convert rule type into RuleType object
     if rule['type'] in rules_mapping:
