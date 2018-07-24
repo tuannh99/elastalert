@@ -56,4 +56,8 @@ email:
 - "elastalert@example.com"
 
 # resolver testing
-resolver: resolves.MyResolver
+resolver: resolves.HTTPResolver
+resolve_http_post_url: "https://hostname.com/v1/alerts?token=some_token"
+resolve_http_post_static_payload:
+  status: ok
+  subkey: any_subkey
